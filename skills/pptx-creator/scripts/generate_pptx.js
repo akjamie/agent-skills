@@ -16,7 +16,7 @@ const path = require('path');
 const fs   = require('fs');
 const pptxgen = require('pptxgenjs');
 
-const { getTheme, listThemes } = require('../themes/index');
+const { getTheme, listThemes } = require('../assets/themes/index');
 const { buildSampleDeck }      = require('../examples/sample_deck');
 
 // ─── CLI arg parsing ──────────────────────────────────────────────────────────

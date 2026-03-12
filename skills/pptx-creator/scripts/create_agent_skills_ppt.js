@@ -1,5 +1,5 @@
 const pptxgen = require('pptxgenjs');
-const { getTheme } = require('../themes/index');
+const { getTheme } = require('../assets/themes/index');
 const path = require('path');
 
 // Using HSBC Red as requested
@@ -17,6 +17,13 @@ function rect(slide, x, y, w, h, color, opts) {
   slide.addShape('rect', { x, y, w, h, fill: { color }, line: { color }, ...opts });
 }
 
+function parseText(input) {
+  if (typeof input !== 'string') return input;
+  if (!input.includes('\n')) return input;
+  const lines = input.split('\n');
+  return lines.map((line, idx) => ({ text: line, options: { breakLine: idx < lines.length - 1 } }));
+}
+
 // ─── Slide 1: Title ───────────────────────────────────────────────────────────
 let slide1 = pres.addSlide();
 slide1.background = { color: palette.titleBg };
@@ -31,7 +38,7 @@ slide1.addText([
   color: palette.titleText, align: 'left', margin: 0
 });
 
-slide1.addText('Moving from general-purpose LLMs to professional-grade specialized tools.', {
+slide1.addText(parseText('Moving from general-purpose LLMs to professional-grade specialized tools.'), {
   x: 0.55, y: 3.4, w: 9.2, h: 0.6,
   fontSize: 18, fontFace: fonts.body,
   color: palette.titleText, align: 'left', margin: 0,

@@ -26,7 +26,7 @@ description: >
 
 ## Theme Library
 
-All 11 themes ship as equal first-class entries. Each lives in `themes/<name>.js`
+All 11 themes ship as equal first-class entries. Each lives in `assets/themes/<name>.js`
 and exports `{ name, label, feel, palette, fonts, motif }`.
 
 | Key | Label | Feel |
@@ -64,7 +64,7 @@ and exports `{ name, label, feel, palette, fonts, motif }`.
 ### Workflow (from scratch)
 
 1. **Determine theme** from user context (see Picking a Theme above)
-2. **Load theme** from `themes/index.js` via `getTheme(themeName)`
+2. **Load theme** from `assets/themes/index.js` via `getTheme(themeName)`
 3. **Build slides** using the `buildSampleDeck` helper or write custom slides
 4. **Call** `pres.writeFile({ fileName: 'output.pptx' })`
 5. **QA** — run eval, then visually inspect
@@ -74,19 +74,11 @@ and exports `{ name, label, feel, palette, fonts, motif }`.
 ```
 skills/pptx-creator/
 ├── SKILL.md                    ← you are here
-├── themes/
-│   ├── index.js                ← central registry
-│   ├── hsbc.js
-│   ├── midnight-executive.js
-│   ├── forest-moss.js
-│   ├── coral-energy.js
-│   ├── warm-terracotta.js
-│   ├── ocean-gradient.js
-│   ├── charcoal-minimal.js
-│   ├── teal-trust.js
-│   ├── berry-cream.js
-│   ├── sage-calm.js
-│   └── cherry-bold.js
+├── assets/
+│   ├── themes/                 ← central registry
+│   │   ├── index.js
+│   │   ├── hsbc.js
+│   │   ├── ...
 ├── examples/
 │   └── sample_deck.js          ← 6-slide reusable builder
 ├── scripts/
@@ -99,8 +91,8 @@ skills/pptx-creator/
 
 ### Adding a Custom Theme
 
-1. Create `themes/my-theme.js` following the same export shape as any existing theme
-2. Register it in `themes/index.js`:
+1. Create `assets/themes/my-theme.js` following the same export shape as any existing theme
+2. Register it in `assets/themes/index.js`:
    ```javascript
    'my-theme': require('./my-theme'),
    ```

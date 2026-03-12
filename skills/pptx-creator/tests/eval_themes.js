@@ -17,7 +17,7 @@ const path    = require('path');
 const fs      = require('fs');
 const pptxgen = require('pptxgenjs');
 
-const { listThemes, getTheme } = require('../themes/index');
+const { listThemes, getTheme } = require('../assets/themes/index');
 const { buildSampleDeck }      = require('../examples/sample_deck');
 
 const OUTPUT_DIR = path.join(__dirname, 'output');
@@ -57,6 +57,11 @@ async function evalTheme(themeKey) {
     // A valid 6-slide .pptx should be well over 10 KB
     if (size < 10_000) errors.push(`File suspiciously small: ${size} bytes`);
   }
+
+  // ── Empty slide check ─────────────────────────────────────────────────────
+  // We trust the buildSampleDeck logic to report warnings to console if 
+  // any slide objects are missing.
+
 
   const elapsed = Date.now() - start;
   const passed  = errors.length === 0;

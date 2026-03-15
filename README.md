@@ -19,7 +19,11 @@ When the agent decides it needs to perform a complex task (e.g., generating a pr
 
 ### `pptx-creator`
 A comprehensive skill for creating modern, professionally designed PowerPoint presentations using `PptxGenJS`.
-- **Features**: 11 distinct corporate themes (including HSBC Red), grid layouts, Mermaid chart integrations, avoiding common file corruption pitfalls.
+- **Features**: 
+  - **McKinsey-Caliber Guidelines**: Adherence to Pyramid Principle (Answer First) and MECE (Mutually Exclusive, Collectively Exhaustive) structure with Action Titles.
+  - **Scenario-Driven Layouts**: Support for 5 typical presentation scenarios (Executive Briefings, Client Pitches, Internal Syncs, Kickoffs, and Workshops).
+  - **Design System**: 11 distinct corporate themes (including HSBC Red), strict typographic hierarchy, and grid layouts.
+  - **Technical Stability**: Mermaid chart integrations and safeguards against common PptxGenJS file corruption pitfalls.
 - **Usage Strategy**: Leverages Progressive Disclosure; the agent only requests the `pptx-creator/SKILL.md` when a user explicitly asks for presentation generation.
 
 ## Best Practices

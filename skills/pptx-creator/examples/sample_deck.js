@@ -78,10 +78,10 @@ function addExecutiveSummary(pres, theme) {
   slide.background = { color: palette.contentBg };
 
   rect(slide, 0, 0, 10, 0.85, palette.primary);
-  slide.addText(parseText('EXECUTIVE SUMMARY'), {
+  slide.addText(parseText('Strategic alignment drives sustainable growth across all sectors'), {
     x: 0.5, y: 0, w: 9.0, h: 0.85,
-    fontSize: 24, fontFace: fonts.header, bold: true,
-    color: 'FFFFFF', align: 'left', valign: 'middle', charSpacing: 2
+    fontSize: 22, fontFace: fonts.header, bold: true,
+    color: 'FFFFFF', align: 'left', valign: 'middle'
   });
 
   // Card Column 1
@@ -146,10 +146,10 @@ function addKeyMetrics(pres, theme) {
   slide.background = { color: palette.contentBg };
 
   rect(slide, 0, 0, 10, 0.85, palette.primary);
-  slide.addText(parseText('KEY PERFORMANCE METRICS'), {
+  slide.addText(parseText('Operational efficiency gains are validated by key metric performance'), {
     x: 0.5, y: 0, w: 9.0, h: 0.85,
-    fontSize: 24, fontFace: fonts.header, bold: true,
-    color: 'FFFFFF', align: 'left', valign: 'middle', charSpacing: 2
+    fontSize: 22, fontFace: fonts.header, bold: true,
+    color: 'FFFFFF', align: 'left', valign: 'middle'
   });
 
   const metrics = [
@@ -200,10 +200,10 @@ function addContentGrid(pres, theme) {
   slide.background = { color: palette.contentBg };
 
   rect(slide, 0, 0, 10, 0.85, palette.primary);
-  slide.addText(parseText('STRATEGIC PILLARS'), {
+  slide.addText(parseText('Four strategic pillars form the foundation for global market leadership'), {
     x: 0.5, y: 0, w: 9.0, h: 0.85,
-    fontSize: 24, fontFace: fonts.header, bold: true,
-    color: 'FFFFFF', align: 'left', valign: 'middle', charSpacing: 2
+    fontSize: 22, fontFace: fonts.header, bold: true,
+    color: 'FFFFFF', align: 'left', valign: 'middle'
   });
 
   const pillars = [
@@ -249,10 +249,10 @@ function addConclusionSlide(pres, theme) {
   slide.background = { color: palette.contentBg };
 
   rect(slide, 0, 0, 10, 0.85, palette.primary);
-  slide.addText(parseText('CONCLUSION & NEXT STEPS'), {
+  slide.addText(parseText('Execution roadmap establishes clear accountability for Q3/Q4 goals'), {
     x: 0.5, y: 0, w: 9.0, h: 0.85,
-    fontSize: 24, fontFace: fonts.header, bold: true,
-    color: 'FFFFFF', align: 'left', valign: 'middle', charSpacing: 2
+    fontSize: 22, fontFace: fonts.header, bold: true,
+    color: 'FFFFFF', align: 'left', valign: 'middle'
   });
 
   slide.addShape('rect', {

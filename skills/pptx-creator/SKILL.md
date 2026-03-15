@@ -20,6 +20,7 @@ description: >
 | Generate with theme | `node scripts/generate_pptx.js --theme <name>` |
 | Generate to custom path | `node scripts/generate_pptx.js --theme <name> --output out/my.pptx` |
 | Run full theme eval | `node tests/eval_themes.js` |
+| Run persona/quality eval | `node tests/eval_persona.js` |
 | Install dependency | `npm install pptxgenjs --no-save` |
 
 ---
@@ -100,9 +101,32 @@ skills/pptx-creator/
 
 ---
 
-## Slide Design Rules
+## McKinsey Content & Structure Guidelines
 
-These rules apply regardless of which theme is used.
+As a McKinsey-caliber agent, ensure all presentations adhere to the following core principles:
+
+### 1. Pyramid Principle & MECE
+- **Pyramid Principle**: Start with the core answer or recommendation first, followed by supporting arguments, and finally the data/evidence (Top-down communication).
+- **MECE (Mutually Exclusive, Collectively Exhaustive)**: Ensure that grouped points, pillars, or arguments do not overlap (Mutually Exclusive) and that no major points are left out (Collectively Exhaustive).
+- **Action Titles**: Every slide title must be a complete sentence that communicates the "So What?" or main takeaway, rather than just a static topic (e.g., use "Operating costs decreased by 15% due to Q2 automation" instead of "Q2 Cost Analysis").
+
+### 2. Five Typical Scenarios & Storylines
+
+Always tailor the deck to one of these 5 typical scenarios. **Note: All 11 themes are available and suitable for all 5 scenarios.**
+
+| Scenario | Objective / Narrative Arc | Recommended Layout Mix |
+|----------|---------------------------|------------------------|
+| **1. Executive Briefing (Senior Managers)** | Bottom-line impact, fast decision-making. "Answer first" structure. | High data-to-text density. Heavy use of **Half+chart** and **Stat callouts**. |
+| **2. Client Pitch / Proposal** | Persuasive arc: Problem $\rightarrow$ Solution $\rightarrow$ Value $\rightarrow$ Proof. | **Icon grids** for capabilities, **2-column** for case studies. Highly visual. |
+| **3. Internal Sharing / Team Sync** | Informative, alignment-focused, actionable updates. | Balanced text/visuals. **2-column cards** for updates, structured next steps. |
+| **4. Project Kickoff / Status Update** | Process clarity, timelines, roles, risk tracking (RAG status). | **Icon grid** for roles/pillars, structured tables/timelines. |
+| **5. Training / Workshop** | Educational, easy to follow, step-by-step concepts. | Lower density per slide. Large, readable fonts (14pt+). Minimal charts. |
+
+---
+
+## Aesthetic & Layout Rules
+
+These professional layout rules create a polished, "consulting-grade" feel. They apply regardless of which theme or scenario is used. Ensure alignment is mathematically perfect and uncluttered.
 
 ### Layout
 
@@ -192,13 +216,17 @@ slide.addShape('rect', {
 
 **Assume problems exist. Do not declare success without checking.**
 
-### Step 1 — Run the eval
+### Step 1 — Run the evals
 
 ```bash
+# 1. Technical/Theme validation:
 node tests/eval_themes.js
+
+# 2. Consulting Persona/Quality validation:
+node tests/eval_persona.js
 ```
 
-All 11 themes must produce `PASS`. If any fail, fix before continuing.
+Both technical and persona evals must produce `PASS`. If any fail, fix before continuing.
 
 ### Step 2 — Content check
 

@@ -1,0 +1,81 @@
+{
+  "skill_name": "pptx-creator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a 6-slide investor pitch deck for a fintech startup called NovaPay that offers instant cross-border payments. Use a dark, premium theme.",
+      "expected_output": "A .pptx file with 6 slides using the midnight-executive theme. The deck should follow a Client Pitch storyline: Problem → Solution → Value → Proof. Every content slide title must be a complete action sentence (not a topic label). An accent bar must be visible on all content cards.",
+      "assertions": [
+        "A .pptx file is generated and is larger than 10 KB",
+        "The midnight-executive or similarly premium dark theme is used",
+        "Slide 2 leads with a strategic framing slide (problem statement or executive summary)",
+        "Every content slide title is a complete sentence communicating a takeaway",
+        "No placeholder text such as 'lorem', 'xxxx', or '[title]' appears",
+        "The deck contains at least one chart or stat callout slide"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Make me a quick 5-slide internal team sync deck for our Q3 engineering roadmap review. Keep it simple and clean.",
+      "expected_output": "A .pptx file using a neutral or minimal theme (e.g. charcoal-minimal or ocean-gradient). Follows the Internal Sharing/Team Sync storyline. Slides cover roadmap highlights, progress, blockers, and next steps. Titles are action sentences. Layout is balanced text/visuals with 2-column cards where appropriate.",
+      "assertions": [
+        "A .pptx file is generated and is larger than 10 KB",
+        "Theme choice is appropriate for an internal/team context",
+        "Slides include a structured next-steps or action items section",
+        "Content slide titles are complete action sentences, not topic labels",
+        "No slides are empty or contain only a title with no body content"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Build a sustainability ESG presentation for 5 slides targeting our board of directors. We report to senior executives and need data to support the story.",
+      "expected_output": "A .pptx file using the forest-moss theme. The deck follows the Executive Briefing storyline (answer-first structure). Should include at least one stat callout slide and one chart slide with real data labels. Every title is a declarative action sentence.",
+      "assertions": [
+        "A .pptx file is generated and is larger than 10 KB",
+        "The forest-moss theme (or ESG-appropriate theme) is used",
+        "At least one slide uses a Stat callout layout with a large hero number (48pt+)",
+        "At least one slide includes a chart with labeled axes",
+        "All slide titles are complete sentences that communicate a 'So What?'",
+        "The first content slide (slide 2) provides an executive-level framing or summary"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i need a pptx for a training workshop on agile methodology for my team, maybe 6 slides, nothing too fancy",
+      "expected_output": "A .pptx file using a calm, readable theme (e.g. sage-calm or teal-trust). Follows the Training/Workshop storyline: lower slide density, large readable fonts, step-by-step flow. Each slide covers one concept. No heavy charting.",
+      "assertions": [
+        "A .pptx file is generated and is larger than 10 KB",
+        "Theme choice is appropriate for a training/educational context",
+        "Body text font size is at least 12pt for readability",
+        "Slides follow a logical step-by-step progression",
+        "Slide titles are action sentences describing what the audience will learn",
+        "No slides are empty or contain only a single word as body content"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Generate a project kickoff deck for a cloud migration project. Include roles, timeline, and risk tracking. Use the HSBC theme.",
+      "expected_output": "A .pptx file using the hsbc theme. Follows the Project Kickoff/Status storyline. Includes an icon grid or structured table slide for roles, a timeline or milestone slide, and a risk section with RAG status indicators. Accent bars present on all content cards.",
+      "assertions": [
+        "A .pptx file is generated and is larger than 10 KB",
+        "The hsbc theme is used as requested",
+        "A slide covering team roles or project pillars is present",
+        "A timeline or milestone slide is present",
+        "Content slide titles are complete action sentences",
+        "Left accent bars are present on content card slides"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Create a 4-slide deck. I don't care about the theme.",
+      "expected_output": "A .pptx file generated using the midnight-executive default theme (since no theme was specified by the user). The agent should not ask clarifying questions and should proceed with the default. The deck should still apply consulting structure even with minimal instructions.",
+      "assertions": [
+        "A .pptx file is generated and is larger than 10 KB",
+        "The agent defaults to midnight-executive when no theme is specified",
+        "The deck has at least 4 slides",
+        "Each slide has a non-empty title that is a complete sentence",
+        "No placeholder text such as 'lorem', 'xxxx', or '[title]' appears"
+      ]
+    }
+  ]
+}

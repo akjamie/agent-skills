@@ -1,13 +1,22 @@
 ---
 name: pptx-creator
 description: >
-  Create modern, professionally designed PowerPoint presentations (.pptx) using
-  PptxGenJS. Supports 11 named themes including HSBC Red, Midnight Executive,
-  Forest & Moss, Coral Energy, Warm Terracotta, Ocean Gradient, Charcoal
-  Minimal, Teal Trust, Berry & Cream, Sage Calm, and Cherry Bold. Every theme
-  shares the same code structure — HSBC Red is one theme in the library, not a
-  special case. Includes a built-in evaluation harness (eval_themes.js) that
-  validates all themes end-to-end.
+  Use this skill when the user wants to create, build, or generate a PowerPoint
+  presentation (.pptx file). Applies even if the user says "make me a slide deck",
+  "put together a pitch", "I need some slides", or references a presentation without
+  explicitly mentioning PowerPoint. Generates consulting-grade decks using PptxGenJS
+  with 11 named themes (HSBC Red, Midnight Executive, Forest & Moss, Coral Energy,
+  Warm Terracotta, Ocean Gradient, Charcoal Minimal, Teal Trust, Berry & Cream, Sage
+  Calm, Cherry Bold). Applies McKinsey-style structure: Pyramid Principle, MECE, and
+  Action Titles. Includes a built-in theme eval harness and structured evals.
+license: MIT
+compatibility: >
+  Requires Node.js >= 18. Run `npm install pptxgenjs --no-save` in the skill root
+  before first use. Optional QA extraction requires Python with markitdown[pptx].
+metadata:
+  version: "2.0"
+  author: akjamie
+allowed-tools: Bash(node:*) Bash(npm:*) Read Write
 ---
 
 # PPTX Creator Skill
@@ -19,15 +28,17 @@ description: >
 | List all themes | `node scripts/generate_pptx.js --list` |
 | Generate with theme | `node scripts/generate_pptx.js --theme <name>` |
 | Generate to custom path | `node scripts/generate_pptx.js --theme <name> --output out/my.pptx` |
-| Run full theme eval | `node tests/eval_themes.js` |
-| Run persona/quality eval | `node tests/eval_persona.js` |
+| JSON output (agentic) | `node scripts/generate_pptx.js --theme <name> --json` |
+| Show CLI help | `node scripts/generate_pptx.js --help` |
+| Run theme eval | `node scripts/eval_themes.js` |
+| Run persona/quality eval | `node scripts/eval_persona.js` |
 | Install dependency | `npm install pptxgenjs --no-save` |
 
 ---
 
 ## Theme Library
 
-All 11 themes ship as equal first-class entries. Each lives in `assets/themes/<name>.js`
+All 11 themes are first-class and equal. Each lives in `assets/themes/<name>.js`
 and exports `{ name, label, feel, palette, fonts, motif }`.
 
 | Key | Label | Feel |
@@ -45,50 +56,59 @@ and exports `{ name, label, feel, palette, fonts, motif }`.
 | `cherry-bold` | Cherry Bold | Bold / Marketing / Brand |
 
 ### Picking a Theme
-- **HSBC or banking presentations** → `hsbc`
-- **Finance / investor decks** → `midnight-executive`
+
+- **HSBC or banking** → `hsbc`
+- **Finance / investor deck** → `midnight-executive`
 - **ESG / sustainability** → `forest-moss`
 - **Startup / pitch deck** → `coral-energy`
-- **Tech / data engineering** → `ocean-gradient`
+- **Tech / data** → `ocean-gradient`
 - **Minimalist design** → `charcoal-minimal`
-- **Healthcare / medical** → `teal-trust`
-- **HR / people culture** → `warm-terracotta`
+- **Healthcare** → `teal-trust`
+- **HR / people** → `warm-terracotta`
 - **Marketing / brand** → `cherry-bold`
-- **Luxury / lifestyle** → `berry-cream`
+- **Luxury** → `berry-cream`
 - **Wellness / education** → `sage-calm`
-- **User didn't specify** → ask, or default to `midnight-executive`
+- **User didn't specify** → default to `midnight-executive` without asking
 
 ---
 
 ## Creating a Presentation
 
-### Workflow (from scratch)
+### Workflow
 
-1. **Determine theme** from user context (see Picking a Theme above)
-2. **Load theme** from `assets/themes/index.js` via `getTheme(themeName)`
-3. **Build slides** using the `buildSampleDeck` helper or write custom slides
-4. **Call** `pres.writeFile({ fileName: 'output.pptx' })`
-5. **QA** — run eval, then visually inspect
+1. **Determine theme** from user context (use the table above; default `midnight-executive`)
+2. **Load theme** via `getTheme(themeName)` from `assets/themes/index.js`
+3. **Choose scenario** — see [consulting_guidelines.md](references/consulting_guidelines.md) for the 5 storylines
+4. **Build slides** using `buildSampleDeck` or write custom slides
+5. **QA** — run evals, then visually inspect
 
 ### File Structure
 
 ```
 skills/pptx-creator/
-├── SKILL.md                    ← you are here
+├── SKILL.md                          ← you are here
 ├── assets/
-│   ├── themes/                 ← central registry
-│   │   ├── index.js
-│   │   ├── hsbc.js
-│   │   ├── ...
+│   └── themes/                       ← 11 theme definitions + index.js
+├── evals/
+│   ├── evals.json                    ← structured test cases (spec format)
+│   └── output/                       ← generated .pptx files from eval runs
 ├── examples/
-│   └── sample_deck.js          ← 6-slide reusable builder
-├── scripts/
-│   └── generate_pptx.js        ← CLI entry-point
+│   └── sample_deck.js                ← 6-slide reusable deck builder
 ├── references/
-│   └── pptxgenjs_api.md        ← Syntax reference (Shapes, Charts, Text arrays)
-└── tests/
-    └── eval_themes.js          ← eval + test harness
+│   ├── pptxgenjs_api.md              ← PptxGenJS syntax reference
+│   └── consulting_guidelines.md      ← McKinsey principles, layouts, QA
+└── scripts/
+    ├── generate_pptx.js              ← CLI entry-point (--help, --json)
+    ├── eval_themes.js                ← theme generation eval harness
+    └── eval_persona.js              ← consulting quality eval harness
 ```
+
+### Key Content References
+
+- **PptxGenJS API syntax**: [references/pptxgenjs_api.md](references/pptxgenjs_api.md)
+- **Consulting structure & layouts**: [references/consulting_guidelines.md](references/consulting_guidelines.md)
+- **Structured eval cases**: [evals/evals.json](evals/evals.json)
+- **Eval runner scripts**: [scripts/eval_themes.js](scripts/eval_themes.js) · [scripts/eval_persona.js](scripts/eval_persona.js)
 
 ### Adding a Custom Theme
 
@@ -101,92 +121,16 @@ skills/pptx-creator/
 
 ---
 
-## McKinsey Content & Structure Guidelines
+## Content & Structure (Summary)
 
-As a McKinsey-caliber agent, ensure all presentations adhere to the following core principles:
+Load [consulting_guidelines.md](references/consulting_guidelines.md) for full detail.
+Key rules that apply on every deck:
 
-### 1. Pyramid Principle & MECE
-- **Pyramid Principle**: Start with the core answer or recommendation first, followed by supporting arguments, and finally the data/evidence (Top-down communication).
-- **MECE (Mutually Exclusive, Collectively Exhaustive)**: Ensure that grouped points, pillars, or arguments do not overlap (Mutually Exclusive) and that no major points are left out (Collectively Exhaustive).
-- **Action Titles**: Every slide title must be a complete sentence that communicates the "So What?" or main takeaway, rather than just a static topic (e.g., use "Operating costs decreased by 15% due to Q2 automation" instead of "Q2 Cost Analysis").
-
-### 2. Five Typical Scenarios & Storylines
-
-Always tailor the deck to one of these 5 typical scenarios. **Note: All 11 themes are available and suitable for all 5 scenarios.**
-
-| Scenario | Objective / Narrative Arc | Recommended Layout Mix |
-|----------|---------------------------|------------------------|
-| **1. Executive Briefing (Senior Managers)** | Bottom-line impact, fast decision-making. "Answer first" structure. | High data-to-text density. Heavy use of **Half+chart** and **Stat callouts**. |
-| **2. Client Pitch / Proposal** | Persuasive arc: Problem $\rightarrow$ Solution $\rightarrow$ Value $\rightarrow$ Proof. | **Icon grids** for capabilities, **2-column** for case studies. Highly visual. |
-| **3. Internal Sharing / Team Sync** | Informative, alignment-focused, actionable updates. | Balanced text/visuals. **2-column cards** for updates, structured next steps. |
-| **4. Project Kickoff / Status Update** | Process clarity, timelines, roles, risk tracking (RAG status). | **Icon grid** for roles/pillars, structured tables/timelines. |
-| **5. Training / Workshop** | Educational, easy to follow, step-by-step concepts. | Lower density per slide. Large, readable fonts (14pt+). Minimal charts. |
-
----
-
-## Aesthetic & Layout Rules
-
-These professional layout rules create a polished, "consulting-grade" feel. They apply regardless of which theme or scenario is used. Ensure alignment is mathematically perfect and uncluttered.
-
-### Layout
-
-Every slide uses one of these proven layouts — never plain title + bullets:
-
-| Layout | When to use |
-|--------|------------|
-| **Title slide** | First slide, dark bg, large text, decorative shapes |
-| **2-column card** | Executive summary, before/after, text + illustration |
-| **Stat callouts** | Key metrics — big numbers (48pt+) with small labels |
-| **Icon grid** | Feature lists, pillars, team intro (2×2 or 2×3) |
-| **Half+chart** | Data stories — chart occupies most of the slide |
-| **Dark closer** | Thank-you, Q&A, section divider |
-
-### Typography
-
-| Element | Size | Weight |
-|---------|------|--------|
-| Slide title (header bar) | 22pt | Bold |
-| Hero stat | 48–56pt | Bold |
-| Section label | 14pt | Bold |
-| Body text | 11–13pt | Regular |
-| Caption / muted | 10–11pt | Regular |
-
-Each theme specifies `fonts.header` and `fonts.body`. Always use those — do
-not hardcode Arial or Calibri unless the theme specifies them.
-
-### Color Usage
-
-- **Primary** → header bars, accent bars, key numbers, borders
-- **Secondary** → card backgrounds, chart secondary series, muted text
-- **Accent** → chart highlights, icon circles, callout text
-- **Muted** → axis labels, captions, secondary text
-
-### Motif
-
-Every content card gets either a left-side (or top) accent bar in `palette.primary`.
-This is the skill's single repeating visual motif — carry it on every content slide.
-
-```javascript
-// accent bar — left side of a card
-slide.addShape('rect', {
-  x: cardX, y: cardY, w: 0.08, h: cardH,
-  fill: { color: theme.palette.primary },
-  line: { color: theme.palette.primary },
-});
-```
-
-### Sandwich Structure
-
-- **Dark slides** (title, closer): use `palette.titleBg` / `motif.darkSlideColor`
-- **Content slides**: use `palette.contentBg` (white or near-white)
-- **Alt sections**: use `palette.altBg` for card backgrounds
-
-### Spacing & Margins
-
-- Slide edge margin: **≥ 0.4"**
-- Between content blocks: **0.3–0.5"**
-- Card internal padding: **0.15–0.2"** left offset after the accent bar
-- Never fill every inch — leave breathing room
+- **Pyramid Principle**: Lead with the answer, then supporting arguments, then evidence
+- **MECE**: Grouped points must not overlap and must be collectively exhaustive
+- **Action Titles**: Every slide title must be a complete declarative sentence ("So What?"), not a static topic label
+- **5 Scenarios**: Executive Briefing · Client Pitch · Team Sync · Project Kickoff · Training
+- **6 Layouts**: Title slide · 2-column card · Stat callouts · Icon grid · Half+chart · Dark closer
 
 ---
 
@@ -194,13 +138,15 @@ slide.addShape('rect', {
 
 > These cause file corruption or broken output. Check every time.
 
+Load [references/pptxgenjs_api.md](references/pptxgenjs_api.md) for full syntax.
+Critical rules:
+
 1. **Never use `#` with hex colors** — `"FF0000"` not `"#FF0000"`
 2. **Never use 8-char hex for opacity** — use the `opacity` property on shadow:
    ```javascript
    shadow: { type: "outer", color: "000000", opacity: 0.12, blur: 8, offset: 3, angle: 135 }
    ```
-3. **Never reuse option objects across shape calls** — PptxGenJS mutates objects in-place.
-   Use a factory function:
+3. **Never reuse option objects across shape calls** — use a factory function:
    ```javascript
    const makeShadow = () => ({ type: "outer", color: "000000", opacity: 0.12, blur: 8, offset: 3, angle: 135 });
    ```
@@ -216,38 +162,15 @@ slide.addShape('rect', {
 
 **Assume problems exist. Do not declare success without checking.**
 
-### Step 1 — Run the evals
+### Workflow
 
-```bash
-# 1. Technical/Theme validation:
-node tests/eval_themes.js
+- [ ] Step 1: Run `node scripts/eval_themes.js` — all themes must PASS
+- [ ] Step 2: Run `node scripts/eval_persona.js` — persona quality must PASS
+- [ ] Step 3: Content check — no empty slides, no placeholder text (`lorem`, `xxxx`, `[title]`)
+- [ ] Step 4: Visual check — open in PowerPoint/LibreOffice and verify layout (see [visual checklist](references/consulting_guidelines.md#qa-checklist-visual))
+- [ ] Step 5: Fix any issues → Regenerate → Re-inspect → Repeat until clean pass
 
-# 2. Consulting Persona/Quality validation:
-node tests/eval_persona.js
-```
-
-Both technical and persona evals must produce `PASS`. If any fail, fix before continuing.
-
-### Step 2 — Content check
-
-- No slides are empty
-- All text is correct and complete
-- No leftover placeholder text (`lorem`, `xxxx`, `[title]`, etc.)
-
-### Step 3 — Visual check
-
-Open the generated `.pptx` in PowerPoint or LibreOffice and check each slide:
-
-- [ ] No text overflows or is cut off at the edge
-- [ ] No elements overlap each other
-- [ ] Left accent bar visible on all content cards
-- [ ] Chart renders with correct theme colors
-- [ ] Dark title/closer slide uses correct background colour
-- [ ] All text has sufficient contrast against its background
-- [ ] Slide edge margins ≥ 0.4" on all sides
-- [ ] No AI tells (accent lines under titles, random blue defaults, uneven spacing)
-
-### Verification Loop
+### Validation Loop
 
 1. Generate → Open in PowerPoint → Inspect
 2. List every issue found (if none, look harder)
@@ -258,14 +181,14 @@ Open the generated `.pptx` in PowerPoint or LibreOffice and check each slide:
 
 ## Adding Flowcharts & Architecture Diagrams (Mermaid)
 
-If you need to include a Mermaid chart, **ALWAYS use local tools to render it** instead of making HTTPS calls (e.g., do not use `kroki.io` or `mermaid.ink`). 
+Always render Mermaid charts **locally** — never call `kroki.io` or `mermaid.ink`:
 
-1. Write the `.mmd` string to a temporary file (e.g. `chart.mmd`).
-2. Run the local Mermaid CLI via `npx`:
+1. Write the `.mmd` string to a temp file (e.g. `chart.mmd`)
+2. Render locally:
    ```bash
    npx -y @mermaid-js/mermaid-cli -i chart.mmd -o chart.png
    ```
-3. Add the resulting image into your presentation:
+3. Embed the image:
    ```javascript
    slide.addImage({ path: "chart.png", x: 1, y: 1, w: 6, h: 4 });
    ```
@@ -275,10 +198,10 @@ If you need to include a Mermaid chart, **ALWAYS use local tools to render it** 
 ## Dependencies
 
 ```bash
-# General requirement for creation (install locally, no package.json footprint):
+# Required — install once in the skill root:
 npm install pptxgenjs --no-save
 
-# Text extraction for QA (optional):
+# Optional — text extraction for QA:
 pip install "markitdown[pptx]"
 ```
 

@@ -1,0 +1,168 @@
+{
+  "skill": "python-pr-review",
+  "version": "1.0",
+  "evals": [
+    {
+      "id": "eval-001",
+      "name": "Missing type hints flagged as WARNING",
+      "prompt": "Please review PR #5 in akjamie/sample-python-app",
+      "context": {
+        "pr_title": "Add user registration endpoint",
+        "pr_body": "Adds POST /users endpoint for registration",
+        "changed_files": [
+          {
+            "filename": "api/routers/users.py",
+            "patch": "+def register_user(email, password, name):\n+    return UserService.create(email, password, name)"
+          }
+        ],
+        "project_context_files": []
+      },
+      "expected_output": {
+        "description": "Review flags missing type annotations as a WARNING on the new function",
+        "verdict": "COMMENT or REQUEST_CHANGES"
+      },
+      "assertions": [
+        "Output contains '🟡 WARNING' or 'WARNING'",
+        "Output mentions 'type hint' or 'type annotation'",
+        "Output references 'api/routers/users.py'",
+        "Output uses the review template structure (Summary, Issues Found, Checklist, Verdict)"
+      ]
+    },
+    {
+      "id": "eval-002",
+      "name": "Missing DB migration flagged as BLOCKER",
+      "prompt": "Can you check PR #12 in myorg/backend-service?",
+      "context": {
+        "pr_title": "Add subscription field to User model",
+        "pr_body": "Adds subscription_tier field to the User model",
+        "changed_files": [
+          {
+            "filename": "models/user.py",
+            "patch": "+    subscription_tier = Column(String, default='free')"
+          }
+        ],
+        "project_context_files": ["pyproject.toml"]
+      },
+      "expected_output": {
+        "description": "Review flags the missing migration file as a BLOCKER",
+        "verdict": "REQUEST_CHANGES"
+      },
+      "assertions": [
+        "Output contains '🔴 BLOCKER' or 'BLOCKER'",
+        "Output mentions 'migration'",
+        "Verdict is 'REQUEST CHANGES'",
+        "Checklist item for migration files is marked ❌"
+      ]
+    },
+    {
+      "id": "eval-003",
+      "name": "Hardcoded secret flagged as BLOCKER",
+      "prompt": "Review this pull request: github.com/myorg/payments/pull/3",
+      "context": {
+        "pr_title": "Integrate Stripe payments",
+        "pr_body": "Adds Stripe payment processing",
+        "changed_files": [
+          {
+            "filename": "services/payment_service.py",
+            "patch": "+    stripe_key = 'sk_live_abc123XYZrealKey9999'\n+    stripe.api_key = stripe_key"
+          }
+        ],
+        "project_context_files": []
+      },
+      "expected_output": {
+        "description": "Review flags the hardcoded Stripe key as a BLOCKER immediately",
+        "verdict": "REQUEST_CHANGES"
+      },
+      "assertions": [
+        "Output contains '🔴 BLOCKER' or 'BLOCKER'",
+        "Output mentions 'secret' or 'hardcoded' or 'credential'",
+        "Verdict is 'REQUEST CHANGES'",
+        "Output references 'services/payment_service.py'"
+      ]
+    },
+    {
+      "id": "eval-004",
+      "name": "Clean PR consistent with architecture gets APPROVE",
+      "prompt": "What do you think of PR #7 in myorg/data-pipeline?",
+      "context": {
+        "pr_title": "Add CSV export to report service",
+        "pr_body": "Adds CSV export functionality to the existing report service",
+        "changed_files": [
+          {
+            "filename": "services/report_service.py",
+            "patch": "+    def export_csv(self, report_id: int) -> str:\n+        \"\"\"Export report data to CSV format.\"\"\"\n+        rows = self.repo.get_rows(report_id)\n+        return self._format_csv(rows)"
+          },
+          {
+            "filename": "tests/test_report_service.py",
+            "patch": "+    def test_export_csv_returns_string():\n+        svc = ReportService(FakeRepo())\n+        result = svc.export_csv(1)\n+        assert isinstance(result, str)"
+          }
+        ],
+        "project_context_files": ["project.md", "pyproject.toml"]
+      },
+      "expected_output": {
+        "description": "Review approves the PR — type hints, docstring, test all present",
+        "verdict": "APPROVE"
+      },
+      "assertions": [
+        "Verdict is 'APPROVE'",
+        "Output contains no 🔴 BLOCKER",
+        "Checklist items for type hints, docstrings, tests are marked ✅",
+        "Output references 'services/report_service.py'"
+      ]
+    },
+    {
+      "id": "eval-005",
+      "name": "Casual phrasing still triggers full review",
+      "prompt": "quick look at PR #2 in akjamie/agent-skills please",
+      "context": {
+        "pr_title": "Update SKILL.md description",
+        "pr_body": "",
+        "changed_files": [
+          {
+            "filename": "skills/python-pr-review/SKILL.md",
+            "patch": "-description: old description\n+description: new description"
+          }
+        ],
+        "project_context_files": ["AGENTS.md"]
+      },
+      "expected_output": {
+        "description": "Despite casual phrasing, the agent completes the full checklist using the template",
+        "verdict": "APPROVE or COMMENT"
+      },
+      "assertions": [
+        "Output uses the full review template structure",
+        "Output contains a Checklist section",
+        "Output contains a Verdict section",
+        "Agent does NOT produce an abbreviated or informal response"
+      ]
+    },
+    {
+      "id": "eval-006",
+      "name": "AGENTS.md no-touch rule violation is BLOCKER",
+      "prompt": "Review PR #9 on myorg/core-platform",
+      "context": {
+        "pr_title": "Refactor base settings",
+        "pr_body": "Cleaned up settings_base.py",
+        "changed_files": [
+          {
+            "filename": "config/settings_base.py",
+            "patch": "-LOG_LEVEL = 'INFO'\n+LOG_LEVEL = 'DEBUG'"
+          }
+        ],
+        "project_context_files": ["AGENTS.md"],
+        "agents_md_content": "## Rules\n- Do not modify `config/settings_base.py` without a migration ticket number in the PR description."
+      },
+      "expected_output": {
+        "description": "Review flags the modification of settings_base.py as a BLOCKER because AGENTS.md prohibits it",
+        "verdict": "REQUEST_CHANGES"
+      },
+      "assertions": [
+        "Output contains '🔴 BLOCKER' or 'BLOCKER'",
+        "Output references 'AGENTS.md'",
+        "Output mentions 'settings_base.py'",
+        "Verdict is 'REQUEST CHANGES'",
+        "Output notes the missing migration ticket"
+      ]
+    }
+  ]
+}

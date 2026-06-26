@@ -26,6 +26,19 @@ A comprehensive skill for creating modern, professionally designed PowerPoint pr
   - **Technical Stability**: Mermaid chart integrations and safeguards against common PptxGenJS file corruption pitfalls.
 - **Usage Strategy**: Leverages Progressive Disclosure; the agent only requests the `pptx-creator/SKILL.md` when a user explicitly asks for presentation generation.
 
+### `orchestrated-pr-review`
+A multi-specialist, language-agnostic code review skill mirroring the `code-review-orchestrator` multi-agent pipeline.
+- **Features**:
+  - **4-Agent Pipeline**: Simulates 4 specialized domains: Security (OWASP Top 10, secrets), Performance (N+1, loops), Style (naming, SOLID), and Test Coverage.
+  - **Synthesis**: Deduplicates, ranks, and merges findings into a single structured Markdown review.
+  - **Telemetry**: Fully integrates with the `langfuse-tracing` skill to log detailed multi-step execution traces to Langfuse.
+
+### `langfuse-tracing`
+A reusable logging skill to instrument agent operations and record execution steps, inputs, outputs, and tokens to Langfuse.
+- **Features**:
+  - **Auto-Discovery**: Automatically parses local `.env` variables (`OTEL_EXPORTER_OTLP_HEADERS` / `OTEL_EXPORTER_OTLP_ENDPOINT`) to extract credentials.
+  - **Span/Generation Logging**: Supports recording standard spans and specialized generation (LLM call) logs.
+
 ## Best Practices
 1. **Atomics**: Keep skills focused on single domains (e.g., one for PPT generation, one for SQL querying).
 2. **Code Over Prompts**: Use scripts to handle heavy lifting (like binary file generation). Use the LLM strictly for reasoning about the inputs.
